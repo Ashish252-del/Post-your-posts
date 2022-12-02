@@ -1,14 +1,16 @@
-import * as React from 'react';
-import News from '../Components/news';
-import Social from '../Components/socialmedia'
-import Contact from '../Components/contact';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Joke from './joke';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import News from "./news";
+import Social from "./socialmedia";
+import Joke from "./joke";
+import Contact from './contact'
+import Nav from "./nav";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -21,7 +23,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box p={3}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -31,18 +33,27 @@ function TabPanel(props) {
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
-export default function BasicTabs() {
+const useStyles = makeStyles({
+  scrollButtons: {
+    "&.Mui-disabled": {
+      opacity: 0.3,
+    },
+  },
+});
+
+export default function SimpleTabs() {
+  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -50,30 +61,35 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'pink' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Latest-News" {...a11yProps(0)} />
-          <Tab label="Social-Media-Trending" {...a11yProps(1)} />
+    <div>
+      <AppBar position="sticky" color="inherit">
+        <Nav />
+        <Tabs
+          variant="scrollable"
+          allowScrollButtonsMobile
+          value={value}
+          onChange={handleChange}
+          classes={classes}
+          aria-label="simple tabs example"
+        >
+          <Tab label="Latest_News" {...a11yProps(0)} />
+          <Tab label="Blogs" {...a11yProps(1)} />
           <Tab label="Jokes" {...a11yProps(2)} />
-          <Tab label="Contact-US" {...a11yProps(3)} />
-         
+          <Tab label="Make Your Post" {...a11yProps(3)} />
         </Tabs>
-      </Box>
+      </AppBar>
       <TabPanel value={value} index={0}>
-        <News/>
-      
+        <News />
       </TabPanel>
       <TabPanel value={value} index={1}>
-       <Social/>
+        <Social />
       </TabPanel>
       <TabPanel value={value} index={2}>
-       <Joke/>
+        <Joke />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Contact/>
+        <Contact />
       </TabPanel>
-     
-    </Box>
+    </div>
   );
 }

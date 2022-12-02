@@ -2,6 +2,10 @@ const express = require("express");
 const { type } = require("os");
 const app = express();
 const detabaseconnection = require("./dbconnection/connection")
+
+const path = require("path");
+require("dotenv").config({path:'./config.env'});
+
 // we need to tell the server that we will recirvr deta in form of json from frontend
 app.use(express.json());
 const Content_Model = require("./Models/content");
@@ -9,8 +13,8 @@ const Content_Model = require("./Models/content");
 // writing post api
 app.post('/api/post', async (req, res) => {
     try {
-        const { name, category, headline, description } = req.body;
-        const new_post = new Content_Model({ name, category, headline, description });
+        const { name, category, headline, description,email } = req.body;
+        const new_post = new Content_Model({ name, category, headline, description,email });
         await new_post.save();
        
         res.json({ success: true, message: "your deta is saved in detabase" }) 
@@ -28,9 +32,9 @@ app.get('/api/getnews', async (req, res) => {
         res.status(404).json({ success: false, error: error.message });
     }
 });
-app.get('/api/getsocialmedia', async (req, res) => {
+app.get('/api/getblog', async (req, res) => {
     try {
-        const data =await Content_Model.find({category:"Social_Media_Trending"}).sort({ createdAt: -1 });
+        const data =await Content_Model.find({category:"Blog"}).sort({ createdAt: -1 });
         res.json({ success: true, data });
     } catch (error) {
         res.status(404).json({ success: false, error: error.message });
@@ -45,10 +49,24 @@ app.get('/api/jokes', async (req, res) => {
     }
 });
 // .then(fat arrow function)
+const port = process.env.PORT || process.env.port;
+if (process.env.NODE_ENV !== "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname + "/client/build/index.html"),
+      function (err) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+  });
+}
 detabaseconnection().then( ()=>
     {
-    let port = 5000;
-        app.listen(port, () => { console.log("Server is running at 5000 port") })
+   
+        app.listen(port, () => { console.log(`Server is running at ${port} port`) })
     }
 
 );

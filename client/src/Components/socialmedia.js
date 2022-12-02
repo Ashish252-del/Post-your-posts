@@ -4,7 +4,7 @@ import Card from '../Components/card'
 const Social = () => {
     const [update, setupdate] = useState([]);
     const fatchuser = async () => {
-        const response = await axios.get("api/getsocialmedia");
+        const response = await axios.get("api/getblog");
         if (response.data.success) setupdate(response.data.data);
         else console.log("Somthing wrong")
     };
@@ -18,6 +18,7 @@ const Social = () => {
                         <Card
                             current={key}
                             name={e.name}
+                            email={e.email}
                             headline={e.headline}
                             description={e.description}
                         />

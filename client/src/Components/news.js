@@ -22,7 +22,8 @@ const News = () => {
                   <>
                       <Card
                           current={key}
-                          name = {e.name}
+                          name={e.name}
+                          email = {e.email}
                           headline={e.headline}
                           description = {e.description}
                       />

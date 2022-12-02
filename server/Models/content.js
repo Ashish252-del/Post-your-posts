@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 // macking schema
 const Content_Model = mongoose.Schema({
     name: { type: String, require: true },
+    email: String,
     category: String,
     headline:String,
     description:String

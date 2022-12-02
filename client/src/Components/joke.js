@@ -5,7 +5,10 @@ const Joke = () => {
     const [ joke, setjoke ] = useState([]);
     const fatchuser = async()=> {
         const response = await axios.get("api/jokes");  
-        if (response.data.success===true) { console.log("getting joke");  setjoke(response.data.data)}
+        if (response.data.success === true) {
+            console.log("getting joke");
+            setjoke(response.data.data)
+        }
         else console.log("there is a problem")
 
 
@@ -22,7 +25,8 @@ const Joke = () => {
                   <>
                       <Card
                           current={key}
-                          name = {e.name}
+                          name={e.name}
+                          email={e.email}
                           headline={e.headline}
                           description = {e.description}
                       />
